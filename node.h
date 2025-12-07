@@ -1,0 +1,62 @@
+#ifndef NODE_H_
+#define NODE_H_
+
+#include <stdio.h>
+
+typedef enum
+{
+    Add,
+    Sub,
+    Mul,
+    Div,
+    Pow,
+    Sin,
+    Cos,
+    Tan,
+    Cot,
+    Log,
+    Ln
+} Ops_t;
+
+
+typedef union 
+{
+    double num;
+    Ops_t op;
+    char var;
+} Value_t; 
+
+
+typedef enum
+{
+    Num,
+    Op,
+    Var
+} Type_t;
+
+
+typedef struct Node
+{
+    Value_t value;
+    Type_t type;
+    Node* left;
+    Node* right;
+    Node* parent;
+} Node;
+
+
+typedef struct
+{
+    Node* root;
+} Tree;
+
+
+Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* parent);
+Tree* TreeInit();
+void ValueInit(Node** node, Type_t type, Value_t value);
+double NodeCount(Node* node);
+Node* CopyNode(Node* node);
+void NodeDestroy(Node** node);
+void TreeDestroy(Tree** tree);
+
+#endif //NODE_H_
