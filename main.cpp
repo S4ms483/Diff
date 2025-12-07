@@ -19,9 +19,9 @@ int main()
     HtmlDump(tree);
     LatexDump(tree);
 
-    TreeSimplify(tree);
-    HtmlDump(tree);
-    LatexDump(tree);
+    // TreeSimplify(tree);
+    // HtmlDump(tree);
+    // LatexDump(tree);
 
     NodeDestroy(&root);
     TreeDestroy(&tree);

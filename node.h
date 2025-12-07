@@ -15,7 +15,8 @@ typedef enum
     Tan,
     Cot,
     Log,
-    Ln
+    Ln,
+    Undef
 } Ops_t;
 
 

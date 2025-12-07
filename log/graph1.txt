@@ -2,9 +2,9 @@ digraph G
  	{
 		rankdir = TB;
 		 node [shape = record];
-		0 [label = " { 0x5040000004d0 | ADD  | parent = (nil) | { left = 0x5040000002d0 | right = 0x504000000490 } }"]; 
+		0 [label = " { 0x504000000510 | ADD  | parent = (nil) | { left = 0x5040000002d0 | right = 0x5040000004d0 } }"]; 
 		0 -> 1; 
-		1 [label = " { 0x5040000002d0 | MUL  | parent = 0x5040000004d0 | { left = 0x504000000050 | right = 0x504000000290 } }"]; 
+		1 [label = " { 0x5040000002d0 | MUL  | parent = 0x504000000510 | { left = 0x504000000050 | right = 0x504000000290 } }"]; 
 		1 -> 2; 
 		2 [label = " { 0x504000000050 | 10 | parent = 0x5040000002d0 | { left = (nil) | right = (nil) } }"]; 
 		1 -> 3; 
@@ -26,17 +26,19 @@ digraph G
 		7 -> 11; 
 		11 [label = " { 0x504000000210 | 10 | parent = 0x504000000250 | { left = (nil) | right = (nil) } }"]; 
 		0 -> 12; 
-		12 [label = " { 0x504000000490 | MUL  | parent = 0x5040000004d0 | { left = 0x504000000310 | right = 0x504000000450 } }"]; 
+		12 [label = " { 0x5040000004d0 | MUL  | parent = 0x504000000510 | { left = 0x504000000310 | right = 0x504000000490 } }"]; 
 		12 -> 13; 
-		13 [label = " { 0x504000000310 | 13 | parent = 0x504000000490 | { left = (nil) | right = (nil) } }"]; 
+		13 [label = " { 0x504000000310 | 13 | parent = 0x5040000004d0 | { left = (nil) | right = (nil) } }"]; 
 		12 -> 14; 
-		14 [label = " { 0x504000000450 | ADD  | parent = 0x504000000490 | { left = 0x504000000350 | right = 0x504000000410 } }"]; 
+		14 [label = " { 0x504000000490 | COS  | parent = 0x5040000004d0 | { left = (nil) | right = 0x504000000450 } }"]; 
 		14 -> 15; 
-		15 [label = " { 0x504000000350 | 20 | parent = 0x504000000450 | { left = (nil) | right = (nil) } }"]; 
-		14 -> 16; 
-		16 [label = " { 0x504000000410 | MUL  | parent = 0x504000000450 | { left = 0x504000000390 | right = 0x5040000003d0 } }"]; 
-		16 -> 17; 
-		17 [label = " { 0x504000000390 | 3 | parent = 0x504000000410 | { left = (nil) | right = (nil) } }"]; 
-		16 -> 18; 
-		18 [label = " { 0x5040000003d0 | 0 | parent = 0x504000000410 | { left = (nil) | right = (nil) } }"]; 
+		15 [label = " { 0x504000000450 | ADD  | parent = 0x504000000490 | { left = 0x504000000350 | right = 0x504000000410 } }"]; 
+		15 -> 16; 
+		16 [label = " { 0x504000000350 | 20 | parent = 0x504000000450 | { left = (nil) | right = (nil) } }"]; 
+		15 -> 17; 
+		17 [label = " { 0x504000000410 | MUL  | parent = 0x504000000450 | { left = 0x504000000390 | right = 0x5040000003d0 } }"]; 
+		17 -> 18; 
+		18 [label = " { 0x504000000390 | 3 | parent = 0x504000000410 | { left = (nil) | right = (nil) } }"]; 
+		17 -> 19; 
+		19 [label = " { 0x5040000003d0 | 0 | parent = 0x504000000410 | { left = (nil) | right = (nil) } }"]; 
 }

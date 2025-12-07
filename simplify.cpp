@@ -80,10 +80,17 @@ sType DefineSimplification(Node* node)
 {
     assert (node != NULL);
 
-    Type_t lType = (node->left)->type;
     Type_t rType = (node->right)->type;
-    Value_t lValue = (node->left)->value;
     Value_t rValue = (node->right)->value;
+
+    if (node->left == NULL)
+    {
+        if (rType == Num) {return Const;}
+        return No;
+    }
+
+    Type_t lType = (node->left)->type;
+    Value_t lValue = (node->left)->value;
 
     bool bothNum = ((lType == Num) && (rType == Num));
     bool oneZero = (((lType == Num) && (lValue.num == 0)) || ((rType == Num) && (rValue.num == 0)));

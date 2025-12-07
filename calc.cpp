@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Node* Calculate(char* buffer)
 {
@@ -64,6 +65,8 @@ Node* GetP(char** chr)
     {
         return GetNumber(chr);
     }
+
+    else if (DefineFunc(chr) != Undef) { return GetFunction(chr, DefineFunc(chr)); }
 
     else { return GetVariable(chr); }
 }
@@ -141,4 +144,31 @@ Node* GetT(char** chr)
     }
 
     return val1;
+}
+
+
+Node* GetFunction(char** chr, Ops_t func)
+{
+    Value_t nodeOp;
+    nodeOp.op = func;
+    Node* val2 = NULL;
+
+    (*chr) += strlen(Functions[func - start].textName);
+    val2 = GetP(chr);
+    
+    Node* val1 = NodeInit(Op, nodeOp, NULL, val2, NULL);
+    val2->parent = val1;
+
+    return val1;
+}
+
+
+Ops_t DefineFunc(char** chr)
+{
+    for (size_t i = 0; i < nFuncs; i++)
+    {
+        if ((*chr - strstr(*chr, Functions[i].textName)) == 0) {return Functions[i].enumName;}
+    }
+
+    return Undef;
 }

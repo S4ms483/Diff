@@ -52,7 +52,7 @@ void PrintTexNode(Node* node, FILE* file)
 
         case (Op): 
         {
-            lBrackets = IsBracketNeeded(node, lChild);
+            if (lChild) {lBrackets = IsBracketNeeded(node, lChild);}
             rBrackets = IsBracketNeeded(node, rChild);
 
             if ((node->value).op == Div)

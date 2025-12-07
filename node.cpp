@@ -88,7 +88,7 @@ double NodeCount(Node* node)
         {
             return (lValue / rValue);
             break;
-        } //Добавить тригонометрию
+        } 
         case (Pow):
         {
             return (pow(lValue, rValue));
@@ -145,7 +145,6 @@ Node* CopyNode(Node* node)
 
     return newNode;
 }
-
 
 
 void NodeDestroy(Node** node)

@@ -13,7 +13,12 @@ static const char* OpSigns [] =
     "-",
     "*",
     "/",
-    "^"
+    "^",
+    "sin",
+    "cos",
+    "tan",
+    "cot",
+    "ln"
 };
 
 
