@@ -2,9 +2,18 @@
 
 #include <stdio.h>
 #include <assert.h>
+#include <math.h>
 
 #include "node.h"
 #include "visdump.h"
+
+
+static bool BothNum(Type_t lType, Type_t rType);
+static bool OneZero(Type_t lType, Type_t rType, Value_t lValue, Value_t rValue);
+static bool OneUno(Type_t lType, Type_t rType, Value_t lValue, Value_t rValue);
+static bool LeftZero(Node* node);
+static bool areEqual(double num1, double num2);
+
 
 void TreeSimplify(Tree* tree)
 {
@@ -12,30 +21,25 @@ void TreeSimplify(Tree* tree)
 
     while (isChanged)
     {
-        fprintf(stderr, "simplifying the statement\n");
         NodeSimplify(tree->root, &isChanged);
         HtmlDump(tree);
     }
 }
 
 
-Node* NodeSimplify(Node* node, bool* flag) //мф принимаем на веру отсутствие детей у нод чисел и переменных
+Node* NodeSimplify(Node* node, bool* isChanged) 
 {
     assert(node != NULL);
+    assert(isChanged != NULL);
+    // FIXME assert flag
+    // FIXME flag плохое название
 
     if (node->type != Op) {return node;}
 
-    Value_t value;
-
-    Type_t lType = (node->left)->type;
-    Type_t rType = (node->right)->type;
-
-    if (lType == Op) { node->left = NodeSimplify(node->left, flag); }
-    if (rType == Op) { node->right = NodeSimplify(node->left, flag); }
-
     sType sim = DefineSimplification(node);
-    *flag = true;
-    fprintf(stderr, "simplification = %d\n", sim);
+
+    Value_t value;
+    *isChanged = true;
 
     switch (sim)
     {
@@ -67,11 +71,25 @@ Node* NodeSimplify(Node* node, bool* flag) //мф принимаем на вер
 
         default:
         {
-            *flag = false;
+            *isChanged = false;
             break;
         }
     }
 
+    if (node->type != Op) {return node;}
+
+    if (node->left) 
+    {
+        Type_t lType = (node->left)->type;
+        if (lType == Op) { node->left = NodeSimplify(node->left, isChanged); }
+    }
+
+    if (node->right)
+    {
+        Type_t rType = (node->right)->type;
+        if (rType == Op) { node->right = NodeSimplify(node->right, isChanged); }
+    }
+    
     return node;
 }
 
@@ -92,31 +110,27 @@ sType DefineSimplification(Node* node)
     Type_t lType = (node->left)->type;
     Value_t lValue = (node->left)->value;
 
-    bool bothNum = ((lType == Num) && (rType == Num));
-    bool oneZero = (((lType == Num) && (lValue.num == 0)) || ((rType == Num) && (rValue.num == 0)));
-    bool oneUno  = (((lType == Num) && (lValue.num == 1)) || ((rType == Num) && (rValue.num == 1)));
-
-    if (bothNum) {return Const;}
+    if (BothNum(lType, rType)) {return Const;}
 
     switch ((node->value).op)
     {
         case Add:
         {
-            if (oneZero) {return AddZero;}
+            if (OneZero(lType, rType, lValue, rValue)) {return AddZero;}
             break;
         }
 
         case Mul:
         {
-            if (oneZero) { return MulZero; }
-            else if (oneUno) { return MulOne; }
+            if (OneZero(lType, rType, lValue, rValue)) { return MulZero; }
+            else if (OneUno(lType, rType, lValue, rValue)) { return MulOne; }
             break;
         }
 
         case Pow:
         {
-            if (oneZero) { return PowZero;}
-            else if (oneUno){ return PowOne;}
+            if (OneZero(lType, rType, lValue, rValue)) { return PowZero;}
+            else if (OneUno(lType, rType, lValue, rValue)){ return PowOne;}
             break;
         }
 
@@ -132,17 +146,12 @@ Node* ConstSim(Node* node)
     node->type = Num;
     
     Value_t value;
-    value.num = NodeCount(node);
-    fprintf(stderr, "value = %d\n", value.num);
+    value.num = NodeCalculate(node); // FIXME плохое название функции
 
-    NodeDestroy(&(node->left));
+    if (node->left) {NodeDestroy(&(node->left));}
     NodeDestroy(&(node->right));
 
     node->value = value;
-    node->left = NULL;
-    node->right = NULL;
-
-    fprintf(stderr, "counted const got %d\n", (node->value).num);
 
     return node;
 }
@@ -150,19 +159,17 @@ Node* ConstSim(Node* node)
 
 Node* AddZeroSim(Node* node)
 {
-    node->type = Var;
-
-    if ((node->left)->type == Var)
+    if (LeftZero)
     {
-        node->value = (node->left)->value;
+        node = node->right;
+        NodeDestroy(&(node->left));
     }
 
-    else {node->value = (node->right)->value;}
-
-    NodeDestroy(&(node->left));
-    NodeDestroy(&(node->right));
-    node->left = NULL;
-    node->right = NULL;
+    else
+    {
+        node = node->left;
+        NodeDestroy(&(node->right));
+    }
 
     return node;
 }
@@ -193,4 +200,34 @@ Node* PowZeroSim(Node* node)
     node->right = NULL;
 
     return node;
+}
+
+
+static bool BothNum(Type_t lType, Type_t rType)
+{
+    return ((lType == Num) && (rType == Num));
+}
+
+
+static bool OneZero(Type_t lType, Type_t rType, Value_t lValue, Value_t rValue)
+{
+    return (((lType == Num) && areEqual(lValue.num, 0)) || ((rType == Num) && areEqual(rValue.num, 0)));
+}
+
+
+static bool OneUno(Type_t lType, Type_t rType, Value_t lValue, Value_t rValue)
+{
+    return (((lType == Num) && areEqual(lValue.num, 1)) || ((rType == Num) && areEqual(rValue.num, 1)));
+}
+
+
+static bool LeftZero (Node* node)
+{
+    return ((((node->left)->type) == Num)  && areEqual(((node->left)->value).num, 0));
+}
+
+
+static bool areEqual(double num1, double num2)
+{
+    return (fabs(num1 - num2) < eps);
 }

@@ -7,7 +7,7 @@ typedef struct
 {
     const char* textName;
     Ops_t enumName;
-}Funcs_t;
+} Funcs_t;
 
 const Funcs_t Functions [] =
 {
@@ -15,21 +15,12 @@ const Funcs_t Functions [] =
     {"cos", Cos},
     {"tan", Tan},
     {"cot", Cot},
-    {"ln",  Ln} 
+    {"log", Log} 
 };
 
-const size_t nFuncs = 5;
-const int start = 5;
+const size_t nFuncs = sizeof(Functions)/sizeof(Functions[0]);
+const int start = 5; //костыль чтобы енам использовать в качестве индекса
 
-Node* Calculate(char* buffer);
-Node* GetNumber(char** chr);
-Node* GetVariable(char** chr);
-Node* GetP(char** chr);
-Node* GetPow(char** chr);
-Node* GetGeneral(char** chr);
-Node* GetExpression(char** chr);
-Node* GetT(char** chr);
-Node* GetFunction(char** chr, Ops_t func);
-Ops_t DefineFunc(char** chr);
+Node* ReadTreeExpression(const char* buffer);
 
-#endif //CALC_H_
+#endif // CALC_H_

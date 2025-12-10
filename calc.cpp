@@ -3,9 +3,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+#include <ctype.h>
 
-Node* Calculate(char* buffer)
+#include "file.h"
+
+static Node* GetNumber(char** chr);
+static Node* GetVariable(char** chr);
+static Node* GetParentheses(char** chr);
+static Node* GetPow(char** chr);
+static Node* GetGeneral(char** chr);
+static Node* GetExpression(char** chr);
+static Node* GetT(char** chr);
+static Node* GetFunction(char** chr, Ops_t func);
+static Ops_t DefineFunc(char** chr);
+
+// FIXME че за название
+Node* ReadTreeExpression(const char* file)
 {
+    assert(file != NULL);
+fprintf(stderr, "%s\n", file);
+    char* buffer = FileRead(file);
+    assert(buffer != NULL);
+
     char* chr = buffer;
 
     Node* root = GetGeneral(&chr);
@@ -14,8 +34,10 @@ Node* Calculate(char* buffer)
 }
 
 
-Node* GetGeneral(char** chr)
+static Node* GetGeneral(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     Node* val = GetExpression(chr);
 
     if (**chr != '$')
@@ -28,11 +50,13 @@ Node* GetGeneral(char** chr)
 }
 
 
-Node* GetNumber(char** chr)
+static Node* GetNumber(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     Value_t val;
 
-    while (('0' <= **chr) && (**chr <= '9'))
+    while(isdigit(**chr)) // FIXME isdigit
     {
         val.num = val.num * 10 + (**chr - '0');
         (*chr)++;     
@@ -42,8 +66,10 @@ Node* GetNumber(char** chr)
 }
 
 
-Node* GetVariable(char** chr)
+static Node* GetVariable(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     Value_t val;
     val.var = **chr;
     (*chr)++;
@@ -51,8 +77,10 @@ Node* GetVariable(char** chr)
 }
 
 
-Node* GetP(char** chr)
+static Node* GetParentheses(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     if (**chr == '(')
     {
         (*chr)++;
@@ -61,7 +89,7 @@ Node* GetP(char** chr)
         (*chr)++;
         return val;
     }
-    else if (('0' <= **chr) && (**chr <= '9'))
+    else if (isdigit(**chr)) // FIXME isdigit
     {
         return GetNumber(chr);
     }
@@ -72,18 +100,20 @@ Node* GetP(char** chr)
 }
 
 
-Node* GetPow(char** chr)
+static Node* GetPow(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     Value_t nodeOp;
     nodeOp.op = Pow;
     Node* val2 = NULL;
     Node* tmp = NULL;
 
-    Node* val1 = GetP(chr);
+    Node* val1 = GetParentheses(chr);
     if (**chr == '^')
     {
         (*chr)++;
-        val2 = GetP(chr);
+        val2 = GetParentheses(chr);
 
         tmp = val1;
         val1 = NodeInit(Op, nodeOp, tmp, val2, NULL);
@@ -97,6 +127,8 @@ Node* GetPow(char** chr)
 
 Node* GetExpression(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     Value_t nodeOp;
     Node* val2 = NULL;
     Node* tmp = NULL;
@@ -123,6 +155,8 @@ Node* GetExpression(char** chr)
 
 Node* GetT(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     Value_t nodeOp;
     Node* val2 = NULL;
     Node* tmp = NULL;
@@ -149,12 +183,14 @@ Node* GetT(char** chr)
 
 Node* GetFunction(char** chr, Ops_t func)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     Value_t nodeOp;
     nodeOp.op = func;
     Node* val2 = NULL;
 
     (*chr) += strlen(Functions[func - start].textName);
-    val2 = GetP(chr);
+    val2 = GetParentheses(chr);
     
     Node* val1 = NodeInit(Op, nodeOp, NULL, val2, NULL);
     val2->parent = val1;
@@ -165,6 +201,8 @@ Node* GetFunction(char** chr, Ops_t func)
 
 Ops_t DefineFunc(char** chr)
 {
+    assert((chr != NULL) && (*chr != NULL));
+
     for (size_t i = 0; i < nFuncs; i++)
     {
         if ((*chr - strstr(*chr, Functions[i].textName)) == 0) {return Functions[i].enumName;}

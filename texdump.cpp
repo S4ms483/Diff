@@ -10,17 +10,18 @@ void LatexDump(Tree* tree)
     assert(tree != NULL);
 
     static int nTexDump = 0;
+fprintf(stderr, "Curr nTexDump is %d\n", nTexDump);
 
     FILE* TexFile = fopen(TexF, "a");
     assert(TexFile != NULL);
 
-    PrintBeginning(TexFile, nTexDump);
+    PrintBeginning(TexFile, nTexDump); //FIXME вынести из функции это 
     fprintf(TexFile, "\\[");
 
     PrintTexNode(tree->root, TexFile);
 
     fprintf(TexFile, "\\]\n");
-    PrintEnd(TexFile);
+    PrintEnd(TexFile);    //FIXME и это 
 
     nTexDump++;
 }
@@ -28,7 +29,7 @@ void LatexDump(Tree* tree)
 
 void PrintTexNode(Node* node, FILE* file)
 {
-    assert(node != NULL);
+    assert(node != NULL);                   
     assert(file != NULL);
 
     Node* lChild = node->left;

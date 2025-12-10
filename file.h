@@ -6,6 +6,6 @@
 char* FileRead(const char* fileName);
 char* CreateBuffer(size_t* buffersize, const char* file);
 
-static const char* calcFile = "calc.txt";
+const char* const calcFile = "calc.txt";
 
 #endif //FILE_H_

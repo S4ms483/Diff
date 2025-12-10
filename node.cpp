@@ -5,6 +5,8 @@
 #include <assert.h>
 #include <math.h>
 
+#include "dsl.h"
+
 
 Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* parent)
 {
@@ -22,12 +24,12 @@ Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* paren
 }
 
 
-Tree* TreeInit()
+Tree* TreeInit(Node* root)
 {
     Tree* tree = (Tree*)calloc(1, sizeof(Tree));
     assert(tree != NULL);
 
-    tree->root = NULL;
+    tree->root = root;
 
     return tree;
 }
@@ -35,6 +37,8 @@ Tree* TreeInit()
 
 void ValueInit(Node** node, Type_t type, Value_t value)
 {
+    assert(*node != NULL);
+
     switch (type)
     {
         case Num:
@@ -45,85 +49,66 @@ void ValueInit(Node** node, Type_t type, Value_t value)
 
         case Op:
         {
-        ((*node)->value).op = value.op;
-        break;
+            ((*node)->value).op = value.op;
+            break;
         }
-
+        
         case Var:
         {
-        ((*node)->value).var = value.var;
-        break;
+            ((*node)->value).var = value.var;
+            break;
         }
     }
 }
 
 
-double NodeCount(Node* node)
+Node* OpNodeCreate(Ops_t op, Node* lChild, Node* rChild)
 {
-    double lValue = ((node->left)->value).num;
-    double rValue = ((node->right)->value).num;
+    Value_t value;
+    value.op = op;
 
-    fprintf(stderr, "lvalue = %f, rvalue = %f\n", lValue, rValue);
-    fprintf(stderr, "op = %d, sub = %d\n", (node->value).op, Sub);
+    Node* newNode = NodeInit(Op, value, lChild, rChild, NULL);
+
+    if (lChild) { lChild->parent = newNode; }
+    rChild->parent = newNode;
+
+    return newNode;
+}
+
+
+Node* NumNodeCreate(double num)
+{
+    Value_t value;
+    value.num = num;
+
+    Node* newNode = NodeInit(Num, value, NULL, NULL, NULL);
+
+    return newNode;
+}
+
+
+double NodeCalculate(Node* node)
+{
+    assert(node != NULL);
+
+    double lValue = 0;
+
+    if (node->left) {lValue = ((node->left)->value).num; }
+    double rValue = ((node->right)->value).num;
 
     switch ((node->value).op)
     {
-        case (Add): 
-        {
-            return (lValue + rValue);
-            break;
-        }  //Как вот это сделать лучше
-        case (Sub): 
-        {
-            return (lValue - rValue);
-            break;
-        }
-        case (Mul): 
-        {
-            fprintf(stderr, "lv&rv = %d\n", lValue * rValue);
-            return (lValue * rValue);
-            break;
-        }
-        case (Div): 
-        {
-            return (lValue / rValue);
-            break;
-        } 
-        case (Pow):
-        {
-            return (pow(lValue, rValue));
-            break;
-        }
-        case (Sin):
-        {
-            return (sin(rValue));
-            break;
-        }
-        case (Cos):
-        {
-            return (cos(rValue));
-            break;
-        }
-        case (Tan):
-        {
-            return (tan(rValue));
-            break;
-        }
-        case (Cot):
-        {
-            return (1/tan(rValue));
-            break;
-        }
-        case (Ln):
-        {
-            return (log(rValue));
-            break;
-        }
-        default: 
-        {
-            return 0;
-            break;
-        }
+        case (Add): { return lValue + rValue; }
+        case (Sub): { return lValue - rValue; }
+        case (Mul): { return lValue * rValue; } 
+        case (Div): { return lValue / rValue; }
+        case (Pow): { return pow(lValue, rValue); }
+        case (Sin): { return sin(rValue); }
+        case (Cos): { return cos(rValue); }
+        case (Tan): { return tan(rValue); }
+        case (Cot): { return 1/tan(rValue); }
+        case (Log): { return log(rValue); }
+        default: { return 0; }
     }
 }
 
@@ -147,6 +132,7 @@ Node* CopyNode(Node* node)
 }
 
 
+
 void NodeDestroy(Node** node)
 {
     assert(node != NULL);
@@ -166,12 +152,11 @@ void NodeDestroy(Node** node)
 }
 
 
-void TreeDestroy(Tree** tree)
+void TreeDestroy(Tree* tree)
 {
     assert(tree != NULL);
 
-    (*tree)->root = NULL;
-    // (*tree)->keys = NULL;
-    free(*tree);
-    *tree = NULL;
+    NodeDestroy(&(tree->root));
+
+    free(tree);
 }

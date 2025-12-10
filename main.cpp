@@ -6,23 +6,28 @@
 #include "texdump.h"
 #include "simplify.h"
 #include "calc.h"
+#include "diff.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-    char* buffer = FileRead(calcFile);
+    const char* cFile = calcFile;
+    if (argc > 1) { cFile = argv[1]; }
+    // char* buffer = FileRead(cFile); // FIXME argc argv -> calcFile и передавать в ReadTreeExpresion
 
-    Node* root = Calculate(buffer);
+    Node* root = ReadTreeExpression(cFile);
+    // Node* root = Calculate(buffer);
 
-    Tree* tree = TreeInit();
-    tree->root = root;
+    Tree* tree = TreeInit(root); // FIXME аргумент root
+    // tree->root = root;
 
     HtmlDump(tree);
     LatexDump(tree);
 
-    // TreeSimplify(tree);
-    // HtmlDump(tree);
-    // LatexDump(tree);
+    TreeDiff(tree);
 
-    NodeDestroy(&root);
-    TreeDestroy(&tree);
+    HtmlDump(tree);
+    LatexDump(tree);
+
+    NodeDestroy(&root); // FIXME для дерева функцию
+    // TreeDestroy(tree); // FIXME че за жесть, оно почему отдельно
 }

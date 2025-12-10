@@ -5,13 +5,9 @@
 
 #include "node.h"
 
-Node* Differentiate(Node* node);
-Node* NumDiff(Node* node);
-Node* XDiff(Node* node);
-Node* OpDiff(Node* node);
-Node* MulDiff(Node* node);
-Node* DivDiff(Node* node);
-Node* SinDiff(Node* node);
-Node* CosDiff(Node* node);
+void TreeDiff(Tree* tree);
+// FIXME static в файл
+Node* Differentiate(Node* node, Tree* tree);
+Node* OpDiff(Node* node, Tree* tree);
 
-#endif //DIFF_H_
+#endif // DIFF_H_

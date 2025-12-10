@@ -15,7 +15,6 @@ typedef enum
     Tan,
     Cot,
     Log,
-    Ln,
     Undef
 } Ops_t;
 
@@ -53,11 +52,13 @@ typedef struct
 
 
 Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* parent);
-Tree* TreeInit();
+Tree* TreeInit(Node* root);
 void ValueInit(Node** node, Type_t type, Value_t value);
-double NodeCount(Node* node);
+Node* OpNodeCreate(Ops_t op, Node* lChild, Node* rChild);
+Node* NumNodeCreate(double num);
+double NodeCalculate(Node* node);
 Node* CopyNode(Node* node);
 void NodeDestroy(Node** node);
-void TreeDestroy(Tree** tree);
+void TreeDestroy(Tree* tree);
 
 #endif //NODE_H_
