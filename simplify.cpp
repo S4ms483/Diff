@@ -162,7 +162,7 @@ Node* ConstSim(Node* node)
 
 Node* AddZeroSim(Node* node)
 {
-    Node* parent = node->parent;
+    Node* tmp = node;
 
     if (LeftUno(node))
     {
@@ -170,21 +170,20 @@ Node* AddZeroSim(Node* node)
         node = node->right;
     }
 
-    else
+    else 
     {
         NodeDestroy(&(node->right));
         node = node->left;
     }
 
-    node->parent = parent;
-
+    free (tmp);
     return node;
 }
 
 
 Node* MulOneSim(Node* node)
 {
-    Node* parent = node->parent;
+    Node* tmp = node;
 
     if (LeftUno(node))
     {
@@ -198,7 +197,7 @@ Node* MulOneSim(Node* node)
         NodeDestroy(&(node->right));
     }
 
-    node->parent = parent;
+    free (tmp);
     return node;
 }
 

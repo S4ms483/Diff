@@ -20,7 +20,7 @@ void DiffAndSimplify(Tree* tree)
     TreeSimplify(tree);
 
     TreeDiff(tree);
-    // TreeSimplify(tree);
+    TreeSimplify(tree);
 
     HtmlDump(tree);
     LatexDump(tree);
@@ -31,7 +31,11 @@ void TreeDiff(Tree* tree)
 {
     assert(tree != NULL);
 
+    Node* tmp = tree->root;
+
     tree->root = Differentiate(tree->root, tree);
+
+    NodeDestroy(&tmp);
 }
 
 
