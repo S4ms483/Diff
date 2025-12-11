@@ -33,10 +33,8 @@ char* CreateBuffer(size_t* buffersize, const char* file)
 
     long int size = statistics.st_size;
     char* buffer = (char*)calloc((size_t)size + 1, sizeof(char));
-fprintf(stderr, "%s [%p] %ld\n", buffer, buffer, size);
 
     *buffersize = fread(buffer, sizeof(char), (size_t)size, fp);
-fprintf(stderr, "%s [%p] %ld\n", buffer, buffer, *buffersize);
 
     return buffer;
 }

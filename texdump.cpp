@@ -9,21 +9,11 @@ void LatexDump(Tree* tree)
 {
     assert(tree != NULL);
 
-    static int nTexDump = 0;
-fprintf(stderr, "Curr nTexDump is %d\n", nTexDump);
+    fprintf(tree->tex, "\\[");
 
-    FILE* TexFile = fopen(TexF, "a");
-    assert(TexFile != NULL);
+    PrintTexNode(tree->root, tree->tex);
 
-    PrintBeginning(TexFile, nTexDump); //FIXME вынести из функции это 
-    fprintf(TexFile, "\\[");
-
-    PrintTexNode(tree->root, TexFile);
-
-    fprintf(TexFile, "\\]\n");
-    PrintEnd(TexFile);    //FIXME и это 
-
-    nTexDump++;
+    fprintf(tree->tex, "\\]\n");   
 }
 
 
@@ -125,20 +115,23 @@ void PrintEndBrackets(bool flag, FILE* file)
 }
 
 
-void PrintBeginning(FILE* file, int nTexDump)
+void PrintBeginning(const char* file, Tree* tree)
 {
-    if (!nTexDump) 
-    {
-        fprintf(file, "\\documentclass[12pt]{article}\n");
-        fprintf(file, "\\usepackage[utf8]{inputenc}\n");
-        fprintf(file, "\\usepackage[english,russian]{babel}\n");
-        fprintf(file, "\\usepackage{amsmath,amssymb}\n");
-        fprintf(file, "\\begin{document}\n");
-    }
+    FILE* TexFile = fopen(TexF, "w");
+    assert(TexFile != NULL);
+
+    fprintf(TexFile, "\\documentclass[12pt]{article}\n");
+    fprintf(TexFile, "\\usepackage[utf8]{inputenc}\n");
+    fprintf(TexFile, "\\usepackage[english,russian]{babel}\n");
+    fprintf(TexFile, "\\usepackage{amsmath,amssymb}\n");
+    fprintf(TexFile, "\\begin{document}\n");
+
+    tree->tex = TexFile;
 }
 
 
 void PrintEnd(FILE* file)
 {
-    fprintf(file, "\\end{document}\n\n"); // как понять когда заканчивать документ
+    fprintf(file, "\\end{document}\n\n"); 
+    fclose(file);
 }

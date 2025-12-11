@@ -8,26 +8,26 @@
 #include "calc.h"
 #include "diff.h"
 
+// static const char* const TexF = "log/diff.tex";
+
 int main(int argc, char* argv[])
 {
     const char* cFile = calcFile;
     if (argc > 1) { cFile = argv[1]; }
-    // char* buffer = FileRead(cFile); // FIXME argc argv -> calcFile и передавать в ReadTreeExpresion
 
     Node* root = ReadTreeExpression(cFile);
-    // Node* root = Calculate(buffer);
 
-    Tree* tree = TreeInit(root); // FIXME аргумент root
+    Tree* tree = TreeInit(root);
     // tree->root = root;
 
-    HtmlDump(tree);
-    LatexDump(tree);
-
-    TreeDiff(tree);
+    PrintBeginning(TexF, tree);
 
     HtmlDump(tree);
     LatexDump(tree);
 
-    NodeDestroy(&root); // FIXME для дерева функцию
-    // TreeDestroy(tree); // FIXME че за жесть, оно почему отдельно
+    DiffAndSimplify(tree);
+
+    // NodeDestroy(&root); 
+    TreeDestroy(tree); 
+
 }

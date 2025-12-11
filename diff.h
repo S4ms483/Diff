@@ -5,9 +5,7 @@
 
 #include "node.h"
 
+void DiffAndSimplify(Tree* tree);
 void TreeDiff(Tree* tree);
-// FIXME static в файл
-Node* Differentiate(Node* node, Tree* tree);
-Node* OpDiff(Node* node, Tree* tree);
 
 #endif // DIFF_H_

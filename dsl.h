@@ -20,6 +20,5 @@
 #define TAN_(rNode) OpNodeCreate(Tan, NULL, rNode)
 #define COT_(rNode) OpNodeCreate(Cot, NULL, rNode)
 #define LN_(rNode)  OpNodeCreate(Ln,  NULL, rNode)
-#define LOG_(lNode, rNode) OpNodeCreate(Log, lNode, rNode)
  
 #endif //DSL_H_

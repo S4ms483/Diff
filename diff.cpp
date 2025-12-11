@@ -10,19 +10,28 @@
 
 static Node* Differentiate(Node* node, Tree* tree);
 static Node* OpDiff(Node* node, Tree* tree);
+static bool ConstPow(Node* node);
+static bool ConstBase(Node* node);
+
+
+void DiffAndSimplify(Tree* tree)
+{
+    assert(tree != NULL);
+    TreeSimplify(tree);
+
+    TreeDiff(tree);
+    // TreeSimplify(tree);
+
+    HtmlDump(tree);
+    LatexDump(tree);
+}
 
 
 void TreeDiff(Tree* tree)
 {
     assert(tree != NULL);
 
-    TreeSimplify(tree); // FIXME вынести отдельно функцию которая последовательно diff и opt
-
     tree->root = Differentiate(tree->root, tree);
-    HtmlDump(tree); // FIXME странная тема делать это тут
-
-     
-    // TreeSimplify(tree);
 }
 
 
@@ -77,12 +86,30 @@ static Node* OpDiff(Node* node, Tree* tree)
         
         case (Cot): { return MUL_(DIV_(CONST_(-1), POW_(SIN_(cR), CONST_(2))), dR); }
         
-        case (Log): { return MUL_(DIV_(CONST_(1), cR), dR); }
+        case (Ln): { return MUL_(DIV_(CONST_(1), cR), dR); }
 
         case (Pow): 
         { 
-            return MUL_(MUL_(cR, POW_(cL, SUB_(cR, CONST_(1)))), dL); // FIXME 2^x x^2 x^x
+            if (ConstPow(node)) { return MUL_(MUL_(cR, POW_(cL, SUB_(cR, CONST_(1)))), dL); }
+
+            if (ConstBase(node)) { return MUL_(POW_(cL, cR), LN_(cL)); }
+
+            return MUL_(POW_(cL, cR), ADD_(MUL_(dR, LN_(cL)), DIV_(MUL_(dL, cR), cL)));
         }
         default : { assert(!"Unkown op"); return NULL; }
     }
+}
+
+
+static bool ConstPow(Node* node)
+{
+    assert (node != NULL);
+    return ((node->right)->type == Num);
+}
+
+
+static bool ConstBase(Node* node)
+{
+    assert (node != NULL);
+    return ((node->left)->type == Num);
 }

@@ -18,11 +18,10 @@ static Node* GetT(char** chr);
 static Node* GetFunction(char** chr, Ops_t func);
 static Ops_t DefineFunc(char** chr);
 
-// FIXME че за название
+
 Node* ReadTreeExpression(const char* file)
 {
     assert(file != NULL);
-fprintf(stderr, "%s\n", file);
     char* buffer = FileRead(file);
     assert(buffer != NULL);
 
@@ -56,7 +55,7 @@ static Node* GetNumber(char** chr)
 
     Value_t val;
 
-    while(isdigit(**chr)) // FIXME isdigit
+    while(isdigit(**chr))
     {
         val.num = val.num * 10 + (**chr - '0');
         (*chr)++;     
@@ -89,7 +88,7 @@ static Node* GetParentheses(char** chr)
         (*chr)++;
         return val;
     }
-    else if (isdigit(**chr)) // FIXME isdigit
+    else if (isdigit(**chr))
     {
         return GetNumber(chr);
     }

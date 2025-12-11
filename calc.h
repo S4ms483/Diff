@@ -15,7 +15,7 @@ const Funcs_t Functions [] =
     {"cos", Cos},
     {"tan", Tan},
     {"cot", Cot},
-    {"log", Log} 
+    {"ln", Ln} 
 };
 
 const size_t nFuncs = sizeof(Functions)/sizeof(Functions[0]);

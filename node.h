@@ -14,7 +14,7 @@ typedef enum
     Cos,
     Tan,
     Cot,
-    Log,
+    Ln,
     Undef
 } Ops_t;
 
@@ -48,6 +48,7 @@ typedef struct Node
 typedef struct
 {
     Node* root;
+    FILE* tex;
 } Tree;
 
 

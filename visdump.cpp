@@ -5,8 +5,6 @@
 #include <stdlib.h>
 
 #include "node.h"
-// const FILE *logFile = OpenLogFile(); 
-// OpenFile() return fopen(...);
 
 void VisualDump(Tree* tree, int nDump)
 {

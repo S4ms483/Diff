@@ -5,9 +5,9 @@
 
 #include "node.h"
 
-static const char* TexF = "log/diff.tex";
+static const char* const TexF = "log/diff.tex";
 
-static const char* OpSigns [] =
+static const char* const OpSigns [] =
 {
     "+",
     "-",
@@ -28,7 +28,7 @@ bool IsBracketNeeded(Node* parent, Node* child);
 int DefinePriority(Node* node);
 void PrintOpBrackets(bool flag, FILE* file);
 void PrintEndBrackets(bool flag, FILE* file);
-void PrintBeginning(FILE* file, int nTexDump);
+void PrintBeginning(const char* file, Tree* tree);
 void PrintEnd(FILE* file);
 
 #endif //TEXDUMP_H_

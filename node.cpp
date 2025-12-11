@@ -31,6 +31,8 @@ Tree* TreeInit(Node* root)
 
     tree->root = root;
 
+    tree->tex = NULL;
+
     return tree;
 }
 
@@ -107,7 +109,7 @@ double NodeCalculate(Node* node)
         case (Cos): { return cos(rValue); }
         case (Tan): { return tan(rValue); }
         case (Cot): { return 1/tan(rValue); }
-        case (Log): { return log(rValue); }
+        case (Ln): { return log(rValue); }
         default: { return 0; }
     }
 }

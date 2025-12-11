@@ -12,6 +12,7 @@ static bool BothNum(Type_t lType, Type_t rType);
 static bool OneZero(Type_t lType, Type_t rType, Value_t lValue, Value_t rValue);
 static bool OneUno(Type_t lType, Type_t rType, Value_t lValue, Value_t rValue);
 static bool LeftZero(Node* node);
+static bool LeftUno (Node* node);
 static bool areEqual(double num1, double num2);
 
 
@@ -31,8 +32,6 @@ Node* NodeSimplify(Node* node, bool* isChanged)
 {
     assert(node != NULL);
     assert(isChanged != NULL);
-    // FIXME assert flag
-    // FIXME flag плохое название
 
     if (node->type != Op) {return node;}
 
@@ -50,10 +49,14 @@ Node* NodeSimplify(Node* node, bool* isChanged)
         }
 
         case (AddZero):
+        {
+            node = AddZeroSim(node);
+            break;
+        }
         case (MulOne):
         case (PowOne):
         {
-            node = AddZeroSim(node);
+            node = MulOneSim(node);
             break;
         }
 
@@ -146,7 +149,7 @@ Node* ConstSim(Node* node)
     node->type = Num;
     
     Value_t value;
-    value.num = NodeCalculate(node); // FIXME плохое название функции
+    value.num = NodeCalculate(node);
 
     if (node->left) {NodeDestroy(&(node->left));}
     NodeDestroy(&(node->right));
@@ -159,10 +162,34 @@ Node* ConstSim(Node* node)
 
 Node* AddZeroSim(Node* node)
 {
-    if (LeftZero)
+    Node* parent = node->parent;
+
+    if (LeftUno(node))
     {
-        node = node->right;
         NodeDestroy(&(node->left));
+        node = node->right;
+    }
+
+    else
+    {
+        NodeDestroy(&(node->right));
+        node = node->left;
+    }
+
+    node->parent = parent;
+
+    return node;
+}
+
+
+Node* MulOneSim(Node* node)
+{
+    Node* parent = node->parent;
+
+    if (LeftUno(node))
+    {
+        NodeDestroy(&(node->left));
+        node = node->right;
     }
 
     else
@@ -171,6 +198,7 @@ Node* AddZeroSim(Node* node)
         NodeDestroy(&(node->right));
     }
 
+    node->parent = parent;
     return node;
 }
 
@@ -224,6 +252,12 @@ static bool OneUno(Type_t lType, Type_t rType, Value_t lValue, Value_t rValue)
 static bool LeftZero (Node* node)
 {
     return ((((node->left)->type) == Num)  && areEqual(((node->left)->value).num, 0));
+}
+
+
+static bool LeftUno (Node* node)
+{
+    return ((((node->left)->type) == Num)  && areEqual(((node->left)->value).num, 1));
 }
 
 

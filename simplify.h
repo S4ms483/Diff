@@ -26,6 +26,7 @@ sType DefineSimplification(Node* node);
 Node* ConstSim(Node* node);
 Node* AddZeroSim(Node* node);
 Node* MulZeroSim(Node* node);
+Node* MulOneSim(Node* node);
 Node* PowZeroSim(Node* node);
 
 // FIXME функции а не макросы
