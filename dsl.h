@@ -9,6 +9,7 @@
 #define cR CopyNode(node->right)
 
 #define CONST_(num) NumNodeCreate(num)
+#define VAR_(chr) VarNodeCreate(chr)
 #define ADD_(lNode, rNode) OpNodeCreate(Add, lNode, rNode)
 #define SUB_(lNode, rNode) OpNodeCreate(Sub, lNode, rNode)
 #define MUL_(lNode, rNode) OpNodeCreate(Mul, lNode, rNode)

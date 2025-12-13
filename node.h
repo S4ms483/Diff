@@ -53,10 +53,11 @@ typedef struct
 
 
 Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* parent);
-Tree* TreeInit(Node* root);
+Tree* TreeInit(Node* root, const char* file);
 void ValueInit(Node** node, Type_t type, Value_t value);
 Node* OpNodeCreate(Ops_t op, Node* lChild, Node* rChild);
 Node* NumNodeCreate(double num);
+Node* VarNodeCreate(char name);
 double NodeCalculate(Node* node);
 Node* CopyNode(Node* node);
 void NodeDestroy(Node** node);

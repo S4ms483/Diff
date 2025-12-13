@@ -8,7 +8,7 @@
 char* FileRead(const char* fileName)
 {
     assert(fileName != NULL);
-
+// FIXME - ЧЗХ
     size_t buffersize = 0;
     char* buffer = CreateBuffer(&buffersize, fileName);
 

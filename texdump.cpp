@@ -1,6 +1,7 @@
 #include "texdump.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include "node.h"
@@ -44,6 +45,7 @@ void PrintTexNode(Node* node, FILE* file)
         case (Op): 
         {
             if (lChild) {lBrackets = IsBracketNeeded(node, lChild);}
+
             rBrackets = IsBracketNeeded(node, rChild);
 
             if ((node->value).op == Div)
@@ -56,7 +58,7 @@ void PrintTexNode(Node* node, FILE* file)
                 PrintTexNode(rChild, file);
                 fprintf(file, "}");
             }
-
+//FIXME -  зач строку пропустила
             else
             {
                 if (lChild)
@@ -73,6 +75,8 @@ void PrintTexNode(Node* node, FILE* file)
                 PrintEndBrackets(rBrackets, file);
             }
         }
+
+        default: { return; }
     }
 }
 
@@ -115,23 +119,26 @@ void PrintEndBrackets(bool flag, FILE* file)
 }
 
 
-void PrintBeginning(const char* file, Tree* tree)
+void PrintBeginning(Tree* tree)
 {
-    FILE* TexFile = fopen(TexF, "w");
-    assert(TexFile != NULL);
-
-    fprintf(TexFile, "\\documentclass[12pt]{article}\n");
-    fprintf(TexFile, "\\usepackage[utf8]{inputenc}\n");
-    fprintf(TexFile, "\\usepackage[english,russian]{babel}\n");
-    fprintf(TexFile, "\\usepackage{amsmath,amssymb}\n");
-    fprintf(TexFile, "\\begin{document}\n");
-
-    tree->tex = TexFile;
+    fprintf(tree->tex, "\\documentclass[12pt]{article}\n");
+    fprintf(tree->tex, "\\usepackage[utf8]{inputenc}\n");
+    fprintf(tree->tex, "\\usepackage[english]{babel}\n");
+    fprintf(tree->tex, "\\usepackage{amsmath,amssymb}\n");
+    fprintf(tree->tex, "\\begin{document}\n");
+    fprintf(tree->tex, "\\begin{enumerate}\n");
 }
 
 
-void PrintEnd(FILE* file)
+void PrintEnd(const char* file, Tree* tree)
 {
-    fprintf(file, "\\end{document}\n\n"); 
-    fclose(file);
+    fprintf(tree->tex, "\\end{enumerate}\n");
+    fprintf(tree->tex, "\\end{document}\n\n"); 
+    fclose(tree->tex);
+
+    // char texComm [texCommLen] = {0};
+    // sprintf(texComm, texCommand, file);
+    // system("cd log");
+    // system(texComm);
+    // system("cd ..");
 }

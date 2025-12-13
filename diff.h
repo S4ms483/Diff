@@ -5,6 +5,7 @@
 
 #include "node.h"
 
+Node* Differentiate(Node* node);
 void DiffAndSimplify(Tree* tree);
 void TreeDiff(Tree* tree);
 

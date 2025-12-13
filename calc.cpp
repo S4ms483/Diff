@@ -14,7 +14,7 @@ static Node* GetParentheses(char** chr);
 static Node* GetPow(char** chr);
 static Node* GetGeneral(char** chr);
 static Node* GetExpression(char** chr);
-static Node* GetT(char** chr);
+static Node* GetTerm(char** chr);
 static Node* GetFunction(char** chr, Ops_t func);
 static Ops_t DefineFunc(char** chr);
 
@@ -132,12 +132,12 @@ Node* GetExpression(char** chr)
     Node* val2 = NULL;
     Node* tmp = NULL;
 
-    Node* val1 = GetT(chr);
+    Node* val1 = GetTerm(chr);
     while ((**chr == '+') || (**chr == '-'))
     {
         char op = **chr;
         (*chr)++;
-        val2 = GetT(chr);
+        val2 = GetTerm(chr);
 
         if (op == '+') { nodeOp.op = Add; }
         else { nodeOp.op = Sub; }
@@ -152,7 +152,7 @@ Node* GetExpression(char** chr)
 }
 
 
-Node* GetT(char** chr)
+Node* GetTerm(char** chr)
 {
     assert((chr != NULL) && (*chr != NULL));
 

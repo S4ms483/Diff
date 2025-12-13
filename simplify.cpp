@@ -37,7 +37,6 @@ Node* NodeSimplify(Node* node, bool* isChanged)
 
     sType sim = DefineSimplification(node);
 
-    Value_t value;
     *isChanged = true;
 
     switch (sim)
@@ -164,7 +163,7 @@ Node* AddZeroSim(Node* node)
 {
     Node* tmp = node;
 
-    if (LeftUno(node))
+    if (LeftZero(node))
     {
         NodeDestroy(&(node->left));
         node = node->right;

@@ -8,7 +8,7 @@
 #include "visdump.h"
 #include "simplify.h"
 
-static Node* Differentiate(Node* node, Tree* tree);
+
 static Node* OpDiff(Node* node, Tree* tree);
 static bool ConstPow(Node* node);
 static bool ConstBase(Node* node);
@@ -39,16 +39,13 @@ void TreeDiff(Tree* tree)
 }
 
 
-static Node* Differentiate(Node* node, Tree* tree)
+Node* Differentiate(Node* node, Tree* tree)
 {
     assert(node != NULL);
     assert(tree != NULL);
 
     HtmlDump(tree);
 
-    Node* parent = node->parent;
-    
-    Value_t value;
 
     switch (node->type)
     {
@@ -65,6 +62,8 @@ static Node* Differentiate(Node* node, Tree* tree)
         {
             return OpDiff(node, tree);
         }
+
+        default: { return NULL; }
     }
 
 }

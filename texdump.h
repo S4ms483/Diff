@@ -6,6 +6,9 @@
 #include "node.h"
 
 static const char* const TexF = "log/diff.tex";
+static const char* const TaylorTexF = "log/taylor.tex";
+static const char* const texCommand = "pdfLatex %s";
+static const size_t texCommLen = 50;
 
 static const char* const OpSigns [] =
 {
@@ -28,7 +31,7 @@ bool IsBracketNeeded(Node* parent, Node* child);
 int DefinePriority(Node* node);
 void PrintOpBrackets(bool flag, FILE* file);
 void PrintEndBrackets(bool flag, FILE* file);
-void PrintBeginning(const char* file, Tree* tree);
-void PrintEnd(FILE* file);
+void PrintBeginning(Tree* tree);
+void PrintEnd(const char* file, Tree* tree);
 
 #endif //TEXDUMP_H_

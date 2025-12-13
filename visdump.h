@@ -5,15 +5,15 @@
 
 #include "node.h"
 
-static const char* LogF = "log/DiffLogfile.html";
-static const char* textComm = "dot log/graph%d.txt -T png -o log/dump%d.png";
+static const char* const LogF = "log/DiffLogfile.html";
+static const char* const textComm = "dot log/graph%d.txt -T png -o log/dump%d.png";
 static const size_t commLen = 50;
 
-static const char* numStr = "\t\t%d [label = \" { %p | %lg | parent = %p | { left = %p | right = %p } }\"]; \n";
-static const char* opStr =  "\t\t%d [label = \" { %p | %s  | parent = %p | { left = %p | right = %p } }\"]; \n";
-static const char* varStr = "\t\t%d [label = \" { %p | %c  | parent = %p | { left = %p | right = %p } }\"]; \n"; //FIXME color
+static const char* const numStr = "\t\t%d [label = \" { %p | %lg | parent = %p | { left = %p | right = %p } }\"]; \n";
+static const char* const opStr =  "\t\t%d [label = \" { %p | %s  | parent = %p | { left = %p | right = %p } }\"]; \n";
+static const char* const varStr = "\t\t%d [label = \" { %p | %c  | parent = %p | { left = %p | right = %p } }\"]; \n"; //FIXME color
 
-static const char* OpArray [] =
+static const char* const OpArray [] =
 {
     "ADD",
     "SUB",

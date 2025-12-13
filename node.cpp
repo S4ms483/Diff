@@ -24,14 +24,18 @@ Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* paren
 }
 
 
-Tree* TreeInit(Node* root)
+Tree* TreeInit(Node* root, const char* file)
 {
+    assert(file != NULL);
+
     Tree* tree = (Tree*)calloc(1, sizeof(Tree));
     assert(tree != NULL);
 
     tree->root = root;
 
-    tree->tex = NULL;
+    FILE* TexFile = fopen(file, "w");
+    assert(TexFile != NULL);
+    tree->tex = TexFile;
 
     return tree;
 }
@@ -84,6 +88,17 @@ Node* NumNodeCreate(double num)
     value.num = num;
 
     Node* newNode = NodeInit(Num, value, NULL, NULL, NULL);
+
+    return newNode;
+}
+
+
+Node* VarNodeCreate(char name)
+{
+    Value_t value;
+    value.var = name;
+
+    Node* newNode = NodeInit(Var, value, NULL, NULL, NULL);
 
     return newNode;
 }
