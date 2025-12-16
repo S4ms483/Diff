@@ -10,8 +10,8 @@
 
 
 static Node* OpDiff(Node* node, Tree* tree);
-static bool ConstPow(Node* node);
-static bool ConstBase(Node* node);
+static bool IsConstPow(Node* node);
+static bool IsConstBase(Node* node);
 
 
 void DiffAndSimplify(Tree* tree)
@@ -35,7 +35,6 @@ void TreeDiff(Tree* tree)
     assert(tree != NULL);
 
     Node* tmp = tree->root;
-
     tree->root = Differentiate(tree->root, tree);
 
     NodeDestroy(&tmp);
@@ -74,6 +73,8 @@ Node* Differentiate(Node* node, Tree* tree)
 
 static Node* OpDiff(Node* node, Tree* tree)
 {
+    assert(node != NULL);
+
     switch ((node->value).op)
     {
         case (Add): { return ADD_(dL, dR); }
@@ -96,9 +97,9 @@ static Node* OpDiff(Node* node, Tree* tree)
 
         case (Pow): 
         { 
-            if (ConstPow(node)) { return MUL_(MUL_(cR, POW_(cL, SUB_(cR, CONST_(1)))), dL); }
+            if (IsConstPow(node)) { return MUL_(MUL_(cR, POW_(cL, SUB_(cR, CONST_(1)))), dL); }
 
-            if (ConstBase(node)) { return MUL_(POW_(cL, cR), LN_(cL)); }
+            if (IsConstBase(node)) { return MUL_(POW_(cL, cR), LN_(cL)); }
 
             return MUL_(POW_(cL, cR), ADD_(MUL_(dR, LN_(cL)), DIV_(MUL_(dL, cR), cL)));
         }
@@ -107,14 +108,14 @@ static Node* OpDiff(Node* node, Tree* tree)
 }
 
 
-static bool ConstPow(Node* node)
+static bool IsConstPow(Node* node)
 {
     assert (node != NULL);
     return ((node->right)->type == Num);
 }
 
 
-static bool ConstBase(Node* node)
+static bool IsConstBase(Node* node)
 {
     assert (node != NULL);
     return ((node->left)->type == Num);

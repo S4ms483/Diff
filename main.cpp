@@ -16,22 +16,13 @@ int main(int argc, char* argv[])
     if (argc > 1) { cFile = argv[1]; }
 
     Node* root = ReadTreeExpression(cFile);
-
     Tree* tree = TreeInit(root, TexF);
     
     // DiffAndSimplify(tree);
     
     Tree* tTree = TreeTaylor(tree, 3);
-    PrintBeginning(tTree);
-    LatexDump(tTree);
-
-    ReplaceVar(tTree->root, 'a', AskForVar());
-    LatexDump(tTree);
 
     TreeSimplify(tTree);
-
-    LatexDump(tTree);
-    HtmlDump(tTree);
 
     PrintEnd(TexF, tTree);
  

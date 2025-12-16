@@ -10,6 +10,12 @@ void LatexDump(Tree* tree)
 {
     assert(tree != NULL);
 
+    static int nTexDump = 0;
+
+    if (nTexDump > 0) { PrintRandPhrase(tree); }
+
+    nTexDump++;
+
     fprintf(tree->tex, "\\[");
 
     PrintTexNode(tree->root, tree->tex);
@@ -125,6 +131,25 @@ void PrintBeginning(Tree* tree)
     fprintf(tree->tex, "\\usepackage[english]{babel}\n");
     fprintf(tree->tex, "\\usepackage{amsmath,amssymb}\n");
     fprintf(tree->tex, "\\begin{document}\n");
+}
+
+
+void PrintDiffHeader(Tree* tree)
+{
+    fprintf(tree->tex, "\\bfseries{Let's differentiate this:}\n\n");
+}
+
+
+void PrintTaylorHeader(Tree* tree)
+{
+    fprintf(tree->tex, "\\bfseries{Let's find Taylor expansion for this:}\n\n");
+}
+
+
+void PrintRandPhrase(Tree* tree)
+{
+    int n = rand() % nPhrases;
+    fprintf(tree->tex, "%s\n", RandPhrases[n]);
 }
 
 

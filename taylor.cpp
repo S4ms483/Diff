@@ -21,7 +21,13 @@ Tree* TreeTaylor(Tree* tree, int n)
     Node* taylorRoot = CopyNode(tree->root);
 
     Tree* taylorTree = TreeInit(taylorRoot, TaylorTexF);
-    ChangeVar(taylorTree->root, 'a');
+
+    PrintBeginning(taylorTree);
+    PrintTaylorHeader(taylorTree);
+
+    LatexDump(taylorTree);
+
+    ChangeVarName(taylorTree->root, 'x', 'a');
     HtmlDump(taylorTree);
 
     Node* nextNode = NULL;
@@ -31,11 +37,16 @@ Tree* TreeTaylor(Tree* tree, int n)
         nextNode = CopyNode(tree->root);
         nextNode = DIV_(MUL_(NDiff(nextNode, taylorTree, i), POW_(SUB_(VAR_('x'), VAR_('a')), CONST_(i))), CONST_(Factorial(i)));
         taylorTree->root = ADD_(taylorTree->root, nextNode);
-        // LatexDump(taylorTree);
+
+        LatexDump(taylorTree);
     }
     
     HtmlDump(taylorTree);
     TreeSimplify(taylorTree);
+
+    ReplaceVarWNum(taylorTree->root, 'a', AskForVarValue('a'));
+    LatexDump(taylorTree);
+
     return taylorTree;
 }
 
@@ -55,6 +66,7 @@ static int Factorial(int num)
 
 static Node* NDiff(Node* node, Tree* tree, int n)
 {
+    assert(tree != NULL);
     assert(node != NULL);
     
     for (int i = 0; i < n; i++)
@@ -64,7 +76,7 @@ static Node* NDiff(Node* node, Tree* tree, int n)
         NodeDestroy(&tmp);
     }
 
-    ChangeVar(node, 'a');
+    ChangeVarName(node, 'x', 'a');
 
     return node;
 }

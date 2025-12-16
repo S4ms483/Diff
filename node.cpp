@@ -18,7 +18,7 @@ Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* paren
     node->right = right;
     node->parent = parent; 
 
-    ValueInit(&node, type, value);
+    ValueInit(node, type, value);
 
     return node;
 }
@@ -43,6 +43,8 @@ Tree* TreeInit(Node* root, const char* file)
 
 void GiveParents(Node* node)
 {
+    assert(node != NULL);
+
     if (node->left) 
     { 
         (node->left)->parent = node; 
@@ -57,27 +59,27 @@ void GiveParents(Node* node)
 }
 
 
-void ValueInit(Node** node, Type_t type, Value_t value)
+void ValueInit(Node* node, Type_t type, Value_t value)
 {
-    assert(*node != NULL);
+    assert(node != NULL);
 
     switch (type)
     {
         case Num:
         {
-        ((*node)->value).num = value.num;
+        (node->value).num = value.num;
         break;
         }
 
         case Op:
         {
-            ((*node)->value).op = value.op;
+            (node->value).op = value.op;
             break;
         }
         
         case Var:
         {
-            ((*node)->value).var = value.var;
+            (node->value).var = value.var;
             break;
         }
     }
@@ -86,6 +88,8 @@ void ValueInit(Node** node, Type_t type, Value_t value)
 
 Node* OpNodeCreate(Ops_t op, Node* lChild, Node* rChild)
 {
+    assert(rChild != NULL);
+
     Value_t value;
     value.op = op;
 
@@ -104,6 +108,7 @@ Node* NumNodeCreate(double num)
     value.num = num;
 
     Node* newNode = NodeInit(Num, value, NULL, NULL, NULL);
+    assert(newNode != NULL);
 
     return newNode;
 }
@@ -115,6 +120,7 @@ Node* VarNodeCreate(char name)
     value.var = name;
 
     Node* newNode = NodeInit(Var, value, NULL, NULL, NULL);
+    assert(newNode != NULL);
 
     return newNode;
 }
@@ -148,6 +154,8 @@ double NodeCalculate(Node* node)
 
 Node* CopyNode(Node* node)
 {
+    assert(node != NULL);
+
     Node* newNode = NodeInit(node->type, node->value, NULL, NULL, NULL);
     if (node->left)
     {
@@ -166,9 +174,9 @@ Node* CopyNode(Node* node)
 
 
 
-double AskForVar()
+double AskForVarValue(char var)
 {
-    printf("Enter a value:\n");
+    printf("Enter \"%c\" value:\n", var);
     double res = 0;
 
     int read = scanf("%lf", &res);
@@ -178,10 +186,12 @@ double AskForVar()
 }
 
 
-void ReplaceVar(Node* node, char var, double num)
+void ReplaceVarWNum(Node* node, char var, double num)
 {
-    if (node->left) { ReplaceVar(node->left, var, num); }
-    if (node->right) { ReplaceVar(node->right, var, num); }
+    assert(node != NULL);
+
+    if (node->left) { ReplaceVarWNum(node->left, var, num); }
+    if (node->right) { ReplaceVarWNum(node->right, var, num); }
 
     Value_t value; 
     value.num = num;
@@ -194,15 +204,17 @@ void ReplaceVar(Node* node, char var, double num)
 }
 
 
-void ChangeVar(Node* node, char var)
+void ChangeVarName(Node* node, char oldName, char newName)
 {
-    if (node->left) { ChangeVar(node->left, var); }
-    if (node->right) { ChangeVar(node->right, var); }
+    assert(node != NULL);
+
+    if (node->left) { ChangeVarName(node->left, oldName, newName); }
+    if (node->right) { ChangeVarName(node->right, oldName, newName); }
 
     Value_t value; 
-    value.var = var;
+    value.var = newName;
 
-    if ((node->type == Var) && (node->value).var == 'x')
+    if ((node->type == Var) && (node->value).var == oldName)
     {
         node->value = value;
     }

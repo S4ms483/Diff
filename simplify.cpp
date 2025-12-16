@@ -25,7 +25,7 @@ void TreeSimplify(Tree* tree)
     {
         tree->root = NodeSimplify(tree->root, &isChanged);
         HtmlDump(tree);
-        // LatexDump(tree);
+        LatexDump(tree);
     }
 }
 
@@ -151,6 +151,8 @@ sType DefineSimplification(Node* node)
 
 Node* ConstSim(Node* node)
 {
+    assert(node != NULL);
+
     node->type = Num;
     
     Value_t value;
@@ -158,7 +160,7 @@ Node* ConstSim(Node* node)
 
     if (node->left) {NodeDestroy(&(node->left));}
     NodeDestroy(&(node->right));
-
+    
     node->value = value;
 
     return node;
@@ -167,6 +169,8 @@ Node* ConstSim(Node* node)
 
 Node* AddZeroSim(Node* node)
 {
+    assert(node != NULL);
+
     Node* tmp = node;
 
     if (LeftZero(node))
@@ -174,7 +178,6 @@ Node* AddZeroSim(Node* node)
         NodeDestroy(&(node->left));
         node = node->right;
     }
-
     else 
     {
         NodeDestroy(&(node->right));
@@ -189,6 +192,8 @@ Node* AddZeroSim(Node* node)
 
 Node* MulOneSim(Node* node)
 {
+    assert(node != NULL);
+
     Node* tmp = node;
 
     if (LeftUno(node))
@@ -196,7 +201,6 @@ Node* MulOneSim(Node* node)
         NodeDestroy(&(node->left));
         node = node->right;
     }
-
     else
     {
         NodeDestroy(&(node->right));
@@ -210,6 +214,8 @@ Node* MulOneSim(Node* node)
 
 Node* MulZeroSim(Node* node)
 {
+    assert(node != NULL);
+
     node->type = Num;
     (node->value).num = 0;
 
@@ -224,6 +230,8 @@ Node* MulZeroSim(Node* node)
 
 Node* PowZeroSim(Node* node)
 {
+    assert(node != NULL);
+
     node->type = Num;
     (node->value).num = 1;
 

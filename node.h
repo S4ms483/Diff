@@ -54,7 +54,7 @@ typedef struct
 
 Node* NodeInit (Type_t type, Value_t value, Node* left, Node* right, Node* parent);
 Tree* TreeInit(Node* root, const char* file);
-void ValueInit(Node** node, Type_t type, Value_t value);
+void ValueInit(Node* node, Type_t type, Value_t value);
 
 Node* OpNodeCreate(Ops_t op, Node* lChild, Node* rChild);
 Node* NumNodeCreate(double num);
@@ -64,9 +64,9 @@ double NodeCalculate(Node* node);
 void GiveParents(Node* node);
 Node* CopyNode(Node* node);
 
-double AskForVar();
-void ReplaceVar(Node* node, char var, double num);
-void ChangeVar(Node* node, char var);
+double AskForVarValue(char var);
+void ReplaceVarWNum(Node* node, char var, double num);
+void ChangeVarName(Node* node, char oldName, char newName);
 
 void NodeDestroy(Node** node);
 void TreeDestroy(Tree* tree);
