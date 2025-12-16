@@ -168,25 +168,25 @@ Node* CopyNode(Node* node)
 
 double AskForVar()
 {
-    printf("Enter x value:\n");
+    printf("Enter a value:\n");
     double res = 0;
 
     int read = scanf("%lf", &res);
     assert(read > 0);
-    
+
     return res;
 }
 
 
-void ReplaceVar(Node* node, double num)
+void ReplaceVar(Node* node, char var, double num)
 {
-    if (node->left) { ReplaceVar(node->left, num); }
-    if (node->right) { ReplaceVar(node->right, num); }
+    if (node->left) { ReplaceVar(node->left, var, num); }
+    if (node->right) { ReplaceVar(node->right, var, num); }
 
     Value_t value; 
     value.num = num;
 
-    if (node->type == Var)
+    if ((node->type == Var) && ((node->value).var == var))
     {
         node->type = Num;
         node->value = value;
@@ -194,6 +194,19 @@ void ReplaceVar(Node* node, double num)
 }
 
 
+void ChangeVar(Node* node, char var)
+{
+    if (node->left) { ChangeVar(node->left, var); }
+    if (node->right) { ChangeVar(node->right, var); }
+
+    Value_t value; 
+    value.var = var;
+
+    if ((node->type == Var) && (node->value).var == 'x')
+    {
+        node->value = value;
+    }
+}
 
 
 void NodeDestroy(Node** node)

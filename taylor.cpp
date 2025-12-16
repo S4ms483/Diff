@@ -21,6 +21,7 @@ Tree* TreeTaylor(Tree* tree, int n)
     Node* taylorRoot = CopyNode(tree->root);
 
     Tree* taylorTree = TreeInit(taylorRoot, TaylorTexF);
+    ChangeVar(taylorTree->root, 'a');
     HtmlDump(taylorTree);
 
     Node* nextNode = NULL;
@@ -28,8 +29,9 @@ Tree* TreeTaylor(Tree* tree, int n)
     for (int i = 1; i < n; i++)
     {
         nextNode = CopyNode(tree->root);
-        nextNode = DIV_(MUL_(NDiff(nextNode, taylorTree, i), POW_(VAR_('x'), CONST_(i))), CONST_(Factorial(i)));
-        taylorTree->root = ADD_(nextNode, taylorTree->root);
+        nextNode = DIV_(MUL_(NDiff(nextNode, taylorTree, i), POW_(SUB_(VAR_('x'), VAR_('a')), CONST_(i))), CONST_(Factorial(i)));
+        taylorTree->root = ADD_(taylorTree->root, nextNode);
+        // LatexDump(taylorTree);
     }
     
     HtmlDump(taylorTree);
@@ -61,6 +63,8 @@ static Node* NDiff(Node* node, Tree* tree, int n)
         node = Differentiate(node, tree);
         NodeDestroy(&tmp);
     }
+
+    ChangeVar(node, 'a');
 
     return node;
 }

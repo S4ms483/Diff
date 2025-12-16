@@ -14,14 +14,14 @@ static const char* const OpSigns [] =
 {
     "+",
     "-",
-    "*",
+    "\\cdot",
     "/",
     "^",
-    "sin",
-    "cos",
-    "tan",
-    "cot",
-    "ln"
+    "\\sin",
+    "\\cos",
+    "\\tan",
+    "\\cot",
+    "\\ln"
 };
 
 

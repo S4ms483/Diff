@@ -6,6 +6,7 @@
 
 #include "node.h"
 #include "visdump.h"
+#include "texdump.h"
 
 
 static bool BothNum(Type_t lType, Type_t rType);
@@ -24,6 +25,7 @@ void TreeSimplify(Tree* tree)
     {
         tree->root = NodeSimplify(tree->root, &isChanged);
         HtmlDump(tree);
+        // LatexDump(tree);
     }
 }
 
