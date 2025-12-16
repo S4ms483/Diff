@@ -33,7 +33,11 @@ Node* NodeSimplify(Node* node, bool* isChanged)
     assert(node != NULL);
     assert(isChanged != NULL);
 
-    if (node->type != Op) {return node;}
+    if (node->type != Op) 
+    {
+        *isChanged = false;
+        return node;
+    }
 
     sType sim = DefineSimplification(node);
 

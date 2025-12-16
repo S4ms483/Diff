@@ -61,6 +61,8 @@ Node* VarNodeCreate(char name);
 double NodeCalculate(Node* node);
 void GiveParents(Node* node);
 Node* CopyNode(Node* node);
+double AskForVar();
+void ReplaceVar(Node* node, double num);
 void NodeDestroy(Node** node);
 void TreeDestroy(Tree* tree);
 

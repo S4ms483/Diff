@@ -22,6 +22,10 @@ int main(int argc, char* argv[])
     // DiffAndSimplify(tree);
     
     Tree* tTree = TreeTaylor(tree, 3);
+
+    ReplaceVar(tTree->root, AskForVar());
+    TreeSimplify(tTree);
+
     PrintBeginning(tTree);
     LatexDump(tTree);
 

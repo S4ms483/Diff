@@ -166,6 +166,36 @@ Node* CopyNode(Node* node)
 
 
 
+double AskForVar()
+{
+    printf("Enter x value:\n");
+    double res = 0;
+
+    int read = scanf("%lf", &res);
+    assert(read > 0);
+    
+    return res;
+}
+
+
+void ReplaceVar(Node* node, double num)
+{
+    if (node->left) { ReplaceVar(node->left, num); }
+    if (node->right) { ReplaceVar(node->right, num); }
+
+    Value_t value; 
+    value.num = num;
+
+    if (node->type == Var)
+    {
+        node->type = Num;
+        node->value = value;
+    }
+}
+
+
+
+
 void NodeDestroy(Node** node)
 {
     assert(node != NULL);
