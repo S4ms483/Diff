@@ -29,9 +29,12 @@ void VisualDump(Tree* tree, int nDump)
 
     fclose(graphFile);
 
-    char comm [commLen] = {0};
-    sprintf(comm, textComm, nDump, nDump);
-    system(comm);
+    char commSvg [commLen] = {0};
+    char commPng [commLen] = {0};
+    sprintf(commSvg, textCommSvg, nDump, nDump);
+    sprintf(commPng, textCommPng, nDump, nDump);
+    system(commSvg);
+    system(commPng);
 };
 
 

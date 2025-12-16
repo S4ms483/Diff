@@ -41,6 +41,22 @@ Tree* TreeInit(Node* root, const char* file)
 }
 
 
+void GiveParents(Node* node)
+{
+    if (node->left) 
+    { 
+        (node->left)->parent = node; 
+        GiveParents(node->left);
+    }
+
+    if (node->right) 
+    { 
+        (node->right)->parent = node; 
+        GiveParents(node->right);
+    }
+}
+
+
 void ValueInit(Node** node, Type_t type, Value_t value)
 {
     assert(*node != NULL);

@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 char* FileRead(const char* fileName);
-char* CreateBuffer(size_t* buffersize, const char* file);
+char* CreateBuffer(const char* file);
 
 const char* const calcFile = "calc.txt";
 

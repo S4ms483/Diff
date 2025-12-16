@@ -6,6 +6,5 @@
 #include "node.h"
 
 Tree* TreeTaylor(Tree* tree, int n);
-//SECTION - и где
 
 #endif //TAYLOR_H_

@@ -59,6 +59,7 @@ Node* OpNodeCreate(Ops_t op, Node* lChild, Node* rChild);
 Node* NumNodeCreate(double num);
 Node* VarNodeCreate(char name);
 double NodeCalculate(Node* node);
+void GiveParents(Node* node);
 Node* CopyNode(Node* node);
 void NodeDestroy(Node** node);
 void TreeDestroy(Tree* tree);

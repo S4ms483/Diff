@@ -20,6 +20,9 @@ void DiffAndSimplify(Tree* tree)
     TreeSimplify(tree);
 
     TreeDiff(tree);
+    GiveParents(tree->root);
+    HtmlDump(tree);
+
     TreeSimplify(tree);
 
     HtmlDump(tree);

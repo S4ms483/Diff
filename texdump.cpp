@@ -58,7 +58,6 @@ void PrintTexNode(Node* node, FILE* file)
                 PrintTexNode(rChild, file);
                 fprintf(file, "}");
             }
-//FIXME -  зач строку пропустила
             else
             {
                 if (lChild)
@@ -126,19 +125,11 @@ void PrintBeginning(Tree* tree)
     fprintf(tree->tex, "\\usepackage[english]{babel}\n");
     fprintf(tree->tex, "\\usepackage{amsmath,amssymb}\n");
     fprintf(tree->tex, "\\begin{document}\n");
-    fprintf(tree->tex, "\\begin{enumerate}\n");
 }
 
 
 void PrintEnd(const char* file, Tree* tree)
 {
-    fprintf(tree->tex, "\\end{enumerate}\n");
     fprintf(tree->tex, "\\end{document}\n\n"); 
     fclose(tree->tex);
-
-    // char texComm [texCommLen] = {0};
-    // sprintf(texComm, texCommand, file);
-    // system("cd log");
-    // system(texComm);
-    // system("cd ..");
 }

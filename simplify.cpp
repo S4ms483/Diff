@@ -22,7 +22,7 @@ void TreeSimplify(Tree* tree)
 
     while (isChanged)
     {
-        NodeSimplify(tree->root, &isChanged);
+        tree->root = NodeSimplify(tree->root, &isChanged);
         HtmlDump(tree);
     }
 }
@@ -176,6 +176,7 @@ Node* AddZeroSim(Node* node)
     }
 
     free (tmp);
+
     return node;
 }
 
@@ -192,8 +193,8 @@ Node* MulOneSim(Node* node)
 
     else
     {
-        node = node->left;
         NodeDestroy(&(node->right));
+        node = node->left;
     }
 
     free (tmp);

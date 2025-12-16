@@ -29,11 +29,4 @@ Node* MulZeroSim(Node* node);
 Node* MulOneSim(Node* node);
 Node* PowZeroSim(Node* node);
 
-// FIXME функции а не макросы
-// #define BothNum ((lType == Num) && (rType == Num))
-// #define OneZero (((lType == Num) && areEqual(lValue.num, 0)) || ((rType == Num) && areEqual(rValue.num, 0)))
-// #define OneUno  (((lType == Num) && areEqual(lValue.num, 1)) || ((rType == Num) && areEqual(rValue.num, 1)))
-
-// #define LeftZero  ((((node->left)->type) == Num)  && areEqual(((node->left)->value).num, 0))
-
 #endif // SIMPLIFY_H_

@@ -9,7 +9,6 @@
 #include "diff.h"
 #include "taylor.h"
 
-// static const char* const TexF = "log/diff.tex";
 
 int main(int argc, char* argv[])
 {
@@ -19,19 +18,17 @@ int main(int argc, char* argv[])
     Node* root = ReadTreeExpression(cFile);
 
     Tree* tree = TreeInit(root, TexF);
-    // tree->root = root;
-
+    
     // DiffAndSimplify(tree);
     
     Tree* tTree = TreeTaylor(tree, 3);
+    PrintBeginning(tTree);
+    LatexDump(tTree);
 
-    // PrintBeginning(tTree);
-    // HtmlDump(tree);
-    // LatexDump(tree);
+    HtmlDump(tTree);
 
-    // PrintEnd(TaylorTexF, tTree);
-
-    // NodeDestroy(&root); 
+    PrintEnd(TexF, tTree);
+ 
     TreeDestroy(tree); 
     TreeDestroy(tTree);
 }

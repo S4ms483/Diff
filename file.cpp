@@ -8,17 +8,14 @@
 char* FileRead(const char* fileName)
 {
     assert(fileName != NULL);
-// FIXME - ЧЗХ
-    size_t buffersize = 0;
-    char* buffer = CreateBuffer(&buffersize, fileName);
+    char* buffer = CreateBuffer(fileName);
 
     return buffer;
 }
 
 
-char* CreateBuffer(size_t* buffersize, const char* file)
+char* CreateBuffer(const char* file)
 {
-    assert(buffersize != NULL);
     assert(file != NULL);
 
     FILE* fp = fopen(file, "r+");
@@ -34,7 +31,7 @@ char* CreateBuffer(size_t* buffersize, const char* file)
     long int size = statistics.st_size;
     char* buffer = (char*)calloc((size_t)size + 1, sizeof(char));
 
-    *buffersize = fread(buffer, sizeof(char), (size_t)size, fp);
+    fread(buffer, sizeof(char), (size_t)size, fp);
 
     return buffer;
 }

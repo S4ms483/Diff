@@ -12,9 +12,10 @@ CXX = g++
 SRC = main.cpp node.cpp visdump.cpp calc.cpp file.cpp texdump.cpp simplify.cpp diff.cpp taylor.cpp
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 OBJDIR = obj
+LOGDIR = log
 EXE = Diff
 
-all: $(EXE)
+all: $(DIR_TARGET) $(EXE)
 
 $(EXE): $(OBJ)
 	@$(CXX) $(FLAGS) -o $(EXE) $(OBJ)
@@ -22,6 +23,9 @@ $(EXE): $(OBJ)
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	@$(CXX) $(FLAGS) -c $< -o $@
+
+$(DIR_TARGET):
+	@mkdir -p $(LOGDIR)
 
 .PHONY: clean
 
