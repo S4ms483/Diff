@@ -12,7 +12,7 @@ void LatexDump(Tree* tree)
 
     static int nTexDump = 0;
 
-    if (nTexDump > 0) { PrintRandPhrase(tree); }
+    if (nTexDump > 0) { fprintf(tree->tex, "%s\n", RandTexPhrase()); }
 
     nTexDump++;
 
@@ -146,10 +146,10 @@ void PrintTaylorHeader(Tree* tree)
 }
 
 
-void PrintRandPhrase(Tree* tree)
+const char* RandTexPhrase()
 {
-    int n = rand() % nPhrases;
-    fprintf(tree->tex, "%s\n", RandPhrases[n]);
+    int n = rand() % (int)(sizeof(RandPhrases) / sizeof(RandPhrases[0]));
+    return RandPhrases[n];
 }
 
 

@@ -12,7 +12,7 @@ static Node* GetNumber(char** chr);
 static Node* GetVariable(char** chr);
 static Node* GetParentheses(char** chr);
 static Node* GetPow(char** chr);
-static Node* GetGeneral(char** chr);
+static Node* GetGeneral(char** chr, char* beg);
 static Node* GetExpression(char** chr);
 static Node* GetTerm(char** chr);
 static Node* GetFunction(char** chr, Ops_t func);
@@ -26,14 +26,15 @@ Node* ReadTreeExpression(const char* file)
     assert(buffer != NULL);
 
     char* chr = buffer;
+    char* beg = chr;
 
-    Node* root = GetGeneral(&chr);
+    Node* root = GetGeneral(&chr, beg);
     free(buffer);
     return root;
 }
 
 
-static Node* GetGeneral(char** chr)
+static Node* GetGeneral(char** chr, char* beg)
 {
     assert((chr != NULL) && (*chr != NULL));
 
@@ -41,7 +42,7 @@ static Node* GetGeneral(char** chr)
 
     if (**chr != '$')
     {
-        fprintf(stderr, "Syntax error\n");
+        fprintf(stderr, "Syntax error in symbol %ld\n", *chr - beg);
     }
 
     (*chr)++;

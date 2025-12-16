@@ -36,9 +36,6 @@ static const char* const RandPhrases [] =
 };
 
 
-static const int nPhrases = 6;
-
-
 void LatexDump(Tree* tree);
 void PrintTexNode(Node* node, FILE* file);
 
@@ -50,7 +47,7 @@ void PrintEndBrackets(bool flag, FILE* file);
 
 void PrintDiffHeader(Tree* tree);
 void PrintTaylorHeader(Tree* tree);
-void PrintRandPhrase(Tree* tree);
+const char* RandTexPhrase();
 
 void PrintBeginning(Tree* tree);
 void PrintEnd(const char* file, Tree* tree);

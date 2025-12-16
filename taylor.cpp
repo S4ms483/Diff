@@ -35,7 +35,17 @@ Tree* TreeTaylor(Tree* tree, int n)
     for (int i = 1; i < n; i++)
     {
         nextNode = CopyNode(tree->root);
-        nextNode = DIV_(MUL_(NDiff(nextNode, taylorTree, i), POW_(SUB_(VAR_('x'), VAR_('a')), CONST_(i))), CONST_(Factorial(i)));
+        nextNode = DIV_(
+            MUL_(
+                NDiff(nextNode, taylorTree, i), 
+                POW_(
+                    SUB_(VAR_('x'), VAR_('a')), 
+                    CONST_(i)
+                )
+            ), 
+            CONST_(Factorial(i))
+        );
+        
         taylorTree->root = ADD_(taylorTree->root, nextNode);
 
         LatexDump(taylorTree);
